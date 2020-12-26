@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "Unified Docs Switcher",
+    "description": "Automatically redirect to documentation versionf for many projects",
+    "author": "Doug Harris",
+    "version": "1.0.0",
+    "background": {
+        "scripts": [
+            "browser-polyfill.min.js",
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "https://docs.python.org/*",
+        "https://docs.djangoproject.com/*",
+        "webRequest",
+        "webRequestBlocking"
+    ]
+}
