@@ -13,6 +13,7 @@
     "permissions": [
         "https://docs.python.org/*",
         "https://docs.djangoproject.com/*",
+        "https://www.postgresql.org/docs/*",
         "webRequest",
         "webRequestBlocking",
         "storage"
