@@ -7,7 +7,7 @@ const docsData = {
     python: {
         version: "3.8",
         urls: "https://docs.python.org/*",
-        pattern: "^(https?:\/\/docs\.python\.org\/)(?<version>[23][^\/]*?)(\/.*)"
+        pattern: "docs.python.org/(?<version>[23][^/]*?)/"
     }
 };
 
@@ -25,15 +25,28 @@ let redirector = (function() {
         browser.storage.local.set({'preferredVersions': preferredVersions});
     };
 
-    let redirectDocs = function(originUrl, platform) {
-        console.log(`Redirecting for ${platform}.`);
-        let versionKey = `${platform}_version`;
-        let myVersion = preferredVersions[platform];
-        let myInfo = docsData[platform];
-        let regexp = new RegExp(myInfo.pattern);
-        let match = regexp.exec(originUrl);
-        let thisVersion = match.groups.version;
+    let redirectDocs = function(originUrl) {
+        let regexp;
+        let match = null;
+        let platform = '';
         let redirectUrl = '';
+
+        // Determine which platform we're using
+        for (let p in docsData) {
+            console.log(`Checking ${p}`);
+            regexp = RegExp(docsData[p].pattern);
+            match = regexp.exec(originUrl);
+            if (match) {
+                console.log(`Matched ${p}`);
+                platform = p;
+                break;
+            }
+        }
+        console.log(`Redirecting for ${platform}.`);
+
+        // Determine if this page's version matches my preferred version
+        let myVersion = preferredVersions[platform];
+        let thisVersion = match.groups.version;
         if (!myVersion) {
             console.log(`Couldn't find ${platform} version`);
         }
@@ -42,28 +55,18 @@ let redirector = (function() {
             redirectUrl = originUrl.replace(thisVersion, myVersion);
             console.log(`Redirecting to version ${myVersion} to ${redirectUrl}`);
         }
-        return redirectUrl;
+        if (redirectUrl) {
+            console.log(`listener redirecting.`);
+            return { redirectUrl: redirectUrl };
+        } else {
+            return {};
+        }
     };
     
 
     return {
         listener: function(details) {
-            let originUrl = details.url;
-            let redirectUrl = '';
-            if (originUrl.includes("django")) {
-                redirectUrl = redirectDocs(originUrl, "django");
-            } else if (thisVersionUrl.includes("python")) {
-                let myInfo = docsData.python;
-                let regexp = new RegExp(myInfo.pattern);
-                let match = regexp.exec(thisVersionUrl);
-                console.log(`Matched python version ${match.groups.version} `);
-            }
-            if (redirectUrl) {
-                console.log(`listener redirecting.`);
-                return { redirectUrl: redirectUrl };
-            } else {
-                return {};
-            }
+            return redirectDocs(details.url);
         },
         loadPreferredVersions: function() {
             console.log("Loading preferred versions");
