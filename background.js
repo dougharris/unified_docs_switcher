@@ -2,17 +2,20 @@ const docsData = {
     django: {
         version: "3.1",
         urls: "https://docs.djangoproject.com/*",
-        pattern: "docs.djangoproject.com/[^/]*/(?<version>[0-9]+\.[0-9]+|dev)/"
+        pattern: "docs.djangoproject.com/[^/]*/(?<version>[0-9]+\.[0-9]+|dev)/",
+        versionSelector: "ul#doc-versions a"
     },
     python: {
         version: "3.9",
         urls: "https://docs.python.org/*",
-        pattern: "docs.python.org/(?<version>[23][^/]*?)/"
+        pattern: "docs.python.org/(?<version>[23][^/]*?)/",
+        versionSelector: ".version_switcher_placeholder select"
     },
     postgresql: {
         version: "current",
         urls: "https://www.postgresql.org/docs/*",
-        pattern: "www.postgresql.org/docs/(?<version>[0-9]+\.[0-9]+|devel|current)/"
+        pattern: "www.postgresql.org/docs/(?<version>[0-9]+\.[0-9]+|devel|current)/",
+        versionSelector: ".mb-2" // for a start
     }
 };
 
@@ -21,10 +24,11 @@ let redirector = (function() {
 
     let debug = true;
     let debugMsg = function(msg) {
-        if (debug) {
-            console.log(msg);
-        }
+        if (debug) { console.log(msg); }
     };
+
+    let platform = '';
+    let match = null;
 
     let setDefaultVersions = function() {
         debugMsg("Setting default versions");
@@ -37,25 +41,46 @@ let redirector = (function() {
         browser.storage.local.set({'preferredVersions': preferredVersions});
     };
 
-    let redirectDocs = function(originUrl) {
-        let regexp;
-        let match = null;
-        let platform = '';
-        let redirectUrl = '';
-
-        debugMsg(`Attemptying to redirect ${originUrl}`);
+    let identifyPlatform = function(originUrl) {
         // Determine which platform we're using
         for (let p in docsData) {
             debugMsg(`Checking ${p}`);
             regexp = RegExp(docsData[p].pattern);
             match = regexp.exec(originUrl);
             if (match) {
-                debugMsg(`Matched ${p}`);
                 platform = p;
                 break;
             }
         }
-        debugMsg(`Redirecting for ${platform}.`);
+        debugMsg(`Identified platform: ${platform}.`);
+    };
+
+    let loadPreferredVersions = function() {
+        debugMsg("Loading preferred versions");
+        browser.storage.local.get('preferredVersions').then(
+            function(items) {
+                if (Object.keys(items).length == 0) {
+                    setDefaultVersions();
+                }
+                for (let p in items) {
+                    preferredVersions = items.preferredVersions;
+                }
+            });
+    };
+
+    // send information to content script that is needed to set up event handler
+    let sendSiteInfo = function(requests, sender, sendResponse) {
+        sendResponse({response: {
+            platform: platform,
+            selector: docsData[platform].versionSelector
+        }});
+    };
+
+    let redirectDocs = function(originUrl) {
+        let regexp;
+        let redirectUrl = '';
+
+        identifyPlatform(originUrl);
 
         // Determine if this page's version matches my preferred version
         let myVersion = preferredVersions[platform];
@@ -71,30 +96,36 @@ let redirector = (function() {
             debugMsg(`Redirecting to version ${myVersion} to ${redirectUrl}`);
         }
         if (redirectUrl) {
-            debugMsg(`listener redirecting.`);
             return { redirectUrl: redirectUrl };
         } else {
             return {};
         }
     };
-    
+
+    let setNewVersion = function(platform, version) {
+        debugMsg(`Setting ${platform} to ${version}`);
+        preferredVersions[platform] = version;
+        browser.storage.local.set({'preferredVersions': preferredVersions});
+    };
 
     return {
-        listener: function(details) {
+        beforeRequestListener: function(details) {
             return redirectDocs(details.url);
         },
-        loadPreferredVersions: function() {
-            debugMsg("Loading preferred versions");
-            browser.storage.local.get('preferredVersions').then(
-                function(items) {
-                    if (Object.keys(items).length == 0) {
-                        setDefaultVersions();
-                    }
-                    for (let p in items) {
-                        preferredVersions = items.preferredVersions;
-                    }
-                    
-                });
+        init: function() {
+            loadPreferredVersions();
+        },
+        messageHandler(request, sender, sendResponse) {
+            switch (request.content) {
+                case 'send-info':
+                    sendSiteInfo(request, sender, sendResponse);
+                    break;
+                case 'set-version':
+                    setNewVersion(request.platform, request.newVersion);
+                    break;
+                default:
+                    debugMsg(`Unknown message received: ${request.content}.`);
+            }
         },
         showStoredVersions: function() {
             let output = '';
@@ -104,29 +135,29 @@ let redirector = (function() {
             debugMsg(`Preferred versions:\n${output}`);
         },
         setTestVersion: function(platform, version) {
-            debugMsg(`Setting ${platform} to ${version}`);
-            preferredVersions[platform] = version;
-            browser.storage.local.set({'preferredVersions': preferredVersions});
+            setNewVersion(platform, version);
         }
 
     };
 })();
 
-redirector.loadPreferredVersions();
+redirector.init();
 
-
-// DEBUG patterns used
 let urlPatterns = [];
-
 for (let key in docsData) {
     urlPatterns.push(docsData[key].urls);
 }
 console.log(`Will redirect for: ${urlPatterns}`);
 
+browser.contentScripts.register({
+    matches: urlPatterns,
+    js: [{file: 'content-script.js'}]
+});
    
 browser.webRequest.onBeforeRequest.addListener(
-    redirector.listener,
+    redirector.beforeRequestListener,
     { urls: urlPatterns, types: ["main_frame"] },
     ["blocking"]
 );
 
+browser.runtime.onMessage.addListener(redirector.messageHandler);
