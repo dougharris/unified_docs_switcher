@@ -29,4 +29,33 @@ function handleError(error) {
 
 const sending = browser.runtime.sendMessage({content: 'send-info'});
 sending.then(versionSwitcherResponse, handleError);
+
+// If we were redirected, show a banner
+browser.storage.local.get('redirectedVersion').then(
+    function(items) {
+        if ('redirectedVersion' in items) {
+            debugMsg(`content script: Redirected to version ${items.redirectedVersion}`);
+            let version = items.redirectedVersion;
+            browser.storage.local.remove('redirectedVersion');
+
+            messageHTML = "<div id='doc-switch-banner'><p>You&rsquo;ve been redirected to the " +
+                "docs for <strong>" + version +
+                "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p></div>";
+            debugMsg(`going to display banner:\n${messageHTML}`);
+            messageDiv = document.createElement('div');
+            messageDiv.innerHTML = messageHTML;
+            document.body.appendChild(messageDiv);
+
+            let hideMsg = function(opacity) {
+                messageDiv.style.opacity = opacity;
+                opacity = opacity - 0.1;
+                if (opacity > 0) {
+                    return window.setTimeout(hideMsg, 100, opacity);
+                }
+            };
+
+            window.setTimeout(hideMsg, 5000, 0.7);
+        }
+    });
  
+

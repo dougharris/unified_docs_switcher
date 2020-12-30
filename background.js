@@ -96,6 +96,7 @@ let redirector = (function() {
             debugMsg(`Redirecting to version ${myVersion} to ${redirectUrl}`);
         }
         if (redirectUrl) {
+            browser.storage.local.set({'redirectedVersion': myVersion});
             return { redirectUrl: redirectUrl };
         } else {
             return {};
@@ -151,7 +152,8 @@ console.log(`Will redirect for: ${urlPatterns}`);
 
 browser.contentScripts.register({
     matches: urlPatterns,
-    js: [{file: 'content-script.js'}]
+    js: [{file: 'content-script.js'}],
+    "css": [{file: "doc-switcher.css"}],
 });
    
 browser.webRequest.onBeforeRequest.addListener(
