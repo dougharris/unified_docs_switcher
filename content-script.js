@@ -2,33 +2,67 @@ let debug = true;
 let debugMsg = function(msg) {
     if (debug) { console.log(msg); }
 };
+let versionSelector = '';
+let versionPlatform;
+let eventHandlerSet = false;
 
-let versionSwitcherResponse = function(message) {
-    let info = message.response;
-    debugMsg(`Setting event handler for ${info.platform} on selector "${info.selector}"`);
+let observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (!mutation.addedNodes || eventHandlerSet) return;
+        if (document.querySelectorAll(versionSelector).length > 0) {
+            setupEventHandler(versionSelector);
+            observer.disconnect();
+        }
+    });
+});
 
-    document.querySelectorAll(info.selector).forEach(function(element) {
-        element.addEventListener('click', function() {
-            let newVersion = element.innerHTML;
-            debugMsg(`Setting new preferred version for ${info.platform} to ${newVersion}`);
+
+let setupEventHandler = function(selector) {
+    document.querySelectorAll(selector).forEach(function(element) {
+        let event;
+        if (element.nodeName == 'SELECT') {
+            event = 'change';
+        } else {
+            event = 'click';
+        }
+        element.addEventListener(event, function(e) {
+            let newVersion;
+            if (e.target.nodeName == 'SELECT') {
+                newVersion = element.selectedOptions[0].innerText;
+            } else {
+                newVersion = element.innerText;
+            }
+            debugMsg(`Setting new preferred version for ${versionPlatform} to ${newVersion}`);
             browser.runtime.sendMessage({
                 content: 'set-version',
-                platform: info.platform,
+                platform: versionPlatform,
                 newVersion: newVersion
             });
             return true;
         });
-    });        
-    
+    });
+    eventHandlerSet = true;
 };
 
-function handleError(error) {
-    debugMsg(`Error: ${error}`);
-};
+let versionSwitcherResponse = function(message) {
+    versionSelector = message.response.selector;
+    versionPlatform = message.response.platform;
+    debugMsg(`Setting event handler for ${versionPlatform} on selector "${versionSelector}"`);
 
+    if (document.querySelectorAll(versionSelector).length > 0) {
+        debugMsg(`versionSwitcher found DOM element by selector, setting up handler.`);
+        setupEventHandler(versionSelector);
+    } else {
+        debugMsg(`versionSwitcher didn't find DOM element by selector, setting up observer.`);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+};
 
 const sending = browser.runtime.sendMessage({content: 'send-info'});
-sending.then(versionSwitcherResponse, handleError);
+sending.then(versionSwitcherResponse);
 
 // If we were redirected, show a banner
 browser.storage.local.get('redirectedVersion').then(
@@ -38,11 +72,12 @@ browser.storage.local.get('redirectedVersion').then(
             let version = items.redirectedVersion;
             browser.storage.local.remove('redirectedVersion');
 
-            messageHTML = "<div id='doc-switch-banner'><p>You&rsquo;ve been redirected to the " +
+            messageHTML = "<p>You&rsquo;ve been redirected to the " +
                 "docs for <strong>" + version +
-                "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p></div>";
+                "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p>";
             debugMsg(`going to display banner:\n${messageHTML}`);
             messageDiv = document.createElement('div');
+            messageDiv.setAttribute('id', 'doc-switch-banner');
             messageDiv.innerHTML = messageHTML;
             document.body.appendChild(messageDiv);
 
@@ -51,11 +86,11 @@ browser.storage.local.get('redirectedVersion').then(
                 opacity = opacity - 0.1;
                 if (opacity > 0) {
                     return window.setTimeout(hideMsg, 100, opacity);
+                } else {
+                    document.body.removeChild(messageDiv);
                 }
             };
 
             window.setTimeout(hideMsg, 5000, 0.7);
         }
     });
- 
-
