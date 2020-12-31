@@ -22,3 +22,7 @@ div#doc-switch-banner {
 div#doc-switch-banner > p {
   margin: 0;
 }
+
+div#doc-switch-banner p strong {
+  color: #00dd00 !important;
+}

@@ -16,7 +16,6 @@ let observer = new MutationObserver(function(mutations) {
     });
 });
 
-
 let setupEventHandler = function(selector) {
     document.querySelectorAll(selector).forEach(function(element) {
         let event;
@@ -47,6 +46,13 @@ let setupEventHandler = function(selector) {
 let versionSwitcherResponse = function(message) {
     versionSelector = message.response.selector;
     versionPlatform = message.response.platform;
+
+    if (versionSelector.indexOf('DOCSTUB') > 0) {
+        let path = window.location.pathname;
+        let stub = path.substring(path.lastIndexOf('/'));
+        versionSelector = versionSelector.replaceAll('DOCSTUB', stub);
+    }
+
     debugMsg(`Setting event handler for ${versionPlatform} on selector "${versionSelector}"`);
 
     if (document.querySelectorAll(versionSelector).length > 0) {

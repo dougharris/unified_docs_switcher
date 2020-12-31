@@ -14,8 +14,8 @@ const docsData = {
     postgresql: {
         version: "current",
         urls: "https://www.postgresql.org/docs/*",
-        pattern: "www.postgresql.org/docs/(?<version>[0-9]+\.[0-9]+|devel|current)/",
-        versionSelector: ".mb-2" // for a start
+        pattern: "www.postgresql.org/docs/(?<version>[0-9]+(\.[0-9]+)*|devel|current)/",
+        versionSelector: '.mb-2 a[href*="DOCSTUB"], .alert-warning a[href*="DOCSTUB"]'
     }
 };
 
