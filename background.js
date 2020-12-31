@@ -24,7 +24,7 @@ let redirector = (function() {
 
     let debug = true;
     let debugMsg = function(msg) {
-        if (debug) { console.log(msg); }
+        if (debug) { console.debug(msg); }
     };
 
     let platform = '';
@@ -148,7 +148,7 @@ let urlPatterns = [];
 for (let key in docsData) {
     urlPatterns.push(docsData[key].urls);
 }
-console.log(`Will redirect for: ${urlPatterns}`);
+console.log(`Unified Doc Switcher extension will redirect for: ${urlPatterns}`);
 
 browser.contentScripts.register({
     matches: urlPatterns,

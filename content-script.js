@@ -1,6 +1,6 @@
 let debug = true;
 let debugMsg = function(msg) {
-    if (debug) { console.log(msg); }
+    if (debug) { console.debug(msg); }
 };
 let versionSelector = '';
 let versionPlatform;
@@ -32,7 +32,7 @@ let setupEventHandler = function(selector) {
             } else {
                 newVersion = element.innerText;
             }
-            debugMsg(`Setting new preferred version for ${versionPlatform} to ${newVersion}`);
+            console.log(`Unified Doc Switcher: Setting new preferred version for ${versionPlatform} to ${newVersion}`);
             browser.runtime.sendMessage({
                 content: 'set-version',
                 platform: versionPlatform,
@@ -68,7 +68,7 @@ sending.then(versionSwitcherResponse);
 browser.storage.local.get('redirectedVersion').then(
     function(items) {
         if ('redirectedVersion' in items) {
-            debugMsg(`content script: Redirected to version ${items.redirectedVersion}`);
+            console.log(`Unified Doc Switcher: Redirected to version ${items.redirectedVersion}`);
             let version = items.redirectedVersion;
             browser.storage.local.remove('redirectedVersion');
 

@@ -5,9 +5,10 @@ A browser extension that remembers which version of documentation you're using f
 The problem this solves:
 
 1. Forget the syntax for Django query filters.
-2. Search google for "django query filters.
+2. Search google for "django query filters".
 3. Click on the link for official Django documentation.
-4. Notice that it's showing documentation for version 3.1 but you're using 2.2. It's _probably_ the same syntax, but you've been doing this long enough to know better, so...
+4. Notice that it's showing documentation for version 3.1 but you're using 2.2.
+   It's _probably_ the same syntax, but you've been doing this long enough to know better, so...
 5. Click to see the 2.2 version.
 
 Twenty minutes later, you want to check the syntax for Django urls... repeat the same process. And then for Python regular expressions or PostgreSQL constraints.
@@ -24,7 +25,7 @@ This extension currently works for the following platforms' documentation:
 * PostgreSQL - https://www.postgresql.org/docs
 * Python - https://docs.python.org/
 
-Want a new one added? [Let me know](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=)
+Want a new one added? [Let me know](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=). See how Django handles this for text links or how Python handles this for a select list in the `docsData` array [in the code](https://github.com/dougharris/unified_docs_switcher/blob/main/background.js).
 
 ## Usage
 
