@@ -88,6 +88,7 @@
                 messageDiv = document.createElement('div');
                 messageDiv.setAttribute('id', 'doc-switch-banner');
                 messageDiv.innerHTML = messageHTML;
+                messageDiv.addEventListener('click', () => { hideMsg(0); });
                 document.body.appendChild(messageDiv);
 
                 let hideMsg = function(opacity) {
