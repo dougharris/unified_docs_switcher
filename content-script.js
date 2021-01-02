@@ -1,5 +1,5 @@
 (function () {
-    let debug = true;
+    let debug = false;
     let debugMsg = function(msg) {
         if (debug) { console.debug(msg); }
     };
