@@ -43,3 +43,7 @@ The extension is available on:
 Add an [issue on the Github repo](https://github.com/dougharris/unified_docs_switcher/issues). 
 
 If you'd like to see a new documentation site handled by this extension, add a [new issue with the "new docs template" label](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=)
+
+## Attribution
+
+Icon by [BECRIS](https://freeicons.io/profile/3484) on [freeicons.io](https://freeicons.io).

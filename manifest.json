@@ -1,9 +1,13 @@
 {
     "manifest_version": 2,
     "name": "Unified Docs Switcher",
-    "description": "Automatically redirect to documentation versionf for many projects",
+    "description": "Automatically redirect to preferred documentation version for many projects",
     "author": "Doug Harris",
     "version": "1.0.0",
+    "icons": {
+        "48": "books.svg",
+        "96": "books.svg"
+    },
     "background": {
         "scripts": [
             "browser-polyfill.min.js",
