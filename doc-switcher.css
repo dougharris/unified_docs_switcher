@@ -21,6 +21,7 @@ div#doc-switch-banner {
 
 div#doc-switch-banner > p {
   margin: 0;
+  letter-spacing: 1px;
 }
 
 div#doc-switch-banner p strong {

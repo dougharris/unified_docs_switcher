@@ -10,12 +10,27 @@
             "background.js"
         ]
     },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://docs.djangoproject.com/*",
+                "https://www.postgresql.org/docs/*",
+                "https://docs.python.org/*"
+            ],
+            "js": [
+                "browser-polyfill.min.js",
+                "content-script.js"
+            ],
+            "css": ["doc-switcher.css"]
+        }
+    ],
     "permissions": [
-        "https://docs.python.org/*",
         "https://docs.djangoproject.com/*",
         "https://www.postgresql.org/docs/*",
+        "https://docs.python.org/*",
         "webRequest",
         "webRequestBlocking",
-        "storage"
+        "storage",
+        "activeTab"
     ]
 }

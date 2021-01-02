@@ -150,12 +150,6 @@ for (let key in docsData) {
 }
 console.log(`Unified Doc Switcher extension will redirect for: ${urlPatterns}`);
 
-browser.contentScripts.register({
-    matches: urlPatterns,
-    js: [{file: 'content-script.js'}],
-    "css": [{file: "doc-switcher.css"}],
-});
-   
 browser.webRequest.onBeforeRequest.addListener(
     redirector.beforeRequestListener,
     { urls: urlPatterns, types: ["main_frame"] },
