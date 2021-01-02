@@ -38,7 +38,7 @@ let redirector = (function() {
                 preferredVersions[p] = docsData[p].version;
             }
         }
-        browser.storage.local.set({'preferredVersions': preferredVersions});
+        browser.storage.sync.set({'preferredVersions': preferredVersions});
     };
 
     let identifyPlatform = function(originUrl) {
@@ -57,7 +57,7 @@ let redirector = (function() {
 
     let loadPreferredVersions = function() {
         debugMsg("Loading preferred versions");
-        browser.storage.local.get('preferredVersions').then(
+        browser.storage.sync.get('preferredVersions').then(
             function(items) {
                 if (Object.keys(items).length == 0) {
                     setDefaultVersions();
@@ -106,7 +106,7 @@ let redirector = (function() {
     let setNewVersion = function(platform, version) {
         debugMsg(`Setting ${platform} to ${version}`);
         preferredVersions[platform] = version;
-        browser.storage.local.set({'preferredVersions': preferredVersions});
+        browser.storage.sync.set({'preferredVersions': preferredVersions});
     };
 
     return {
