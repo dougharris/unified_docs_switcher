@@ -25,7 +25,8 @@ zip -FS chrome/unified_doc_switcher.zip manifest.json \
     browser-polyfill.min.js \
     browser-polyfill.min.js.map \
     content-script.js \
-    doc-switcher.css 
+    doc-switcher.css \
+    books.png
 
 
 # Add app id info for Firefox
