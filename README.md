@@ -15,6 +15,8 @@ Twenty minutes later, you want to check the syntax for Django urls... repeat the
 
 Wouldn't it be nice if you were automatically seeing your version every time? That's what this extension helps with.
 
+Would you like to see it in action? Watch [this video](https://youtu.be/z2hHxXpTFfE).
+
 This was inspired by [django docs version switcher](https://github.com/jmckib/django_docs_version_switcher) and [py3redirect](https://github.com/m4tx/py3redirect).
 
 ## Platforms
