@@ -25,7 +25,7 @@ const docsData = {
     }
 };
 
-let storage = browser.storage.local;
+let storage = browser.storage.sync;
 
 let redirector = (function() {
     let preferredVersions = {};
@@ -149,7 +149,7 @@ let redirector = (function() {
             for (let p in preferredVersions) {
                 output = output + `\t${p}: ${preferredVersions[p]}\n`;
             }
-            debugMsg(`Preferred versions:\n${output}`);
+            console.log(`Preferred versions:\n${output}`);
         },
         setTestVersion: function(platform, version) {
             setNewVersion(platform, version);

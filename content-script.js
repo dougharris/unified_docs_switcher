@@ -32,6 +32,7 @@
                 } else {
                     newVersion = element.innerText;
                 }
+                newVersion = newVersion.toLowerCase();
                 console.log(`Unified Doc Switcher: Setting new preferred version ` +
                             `for ${versionPlatform} to ${newVersion}`);
                 browser.runtime.sendMessage({
