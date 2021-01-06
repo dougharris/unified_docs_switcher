@@ -11,6 +11,8 @@ Please fill out as much of this as you can. The platform name and base URL are t
 
 **Platform name** (e.g. "Django", "Ruby"):
 
+**Example URL**:
+
 **Base URL** controls which URLs the extension will be active for, e.g. `https://docs.djangoproject.com/*`:
 
 **Documentation pattern** a regular expressionthat identifies the version indicator in the URL path, e.g. for django, it's `docs.djangoproject.com/[^/]*/(?<version>[0-9]+\.[0-9]+|dev)/`
