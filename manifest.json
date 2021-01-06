@@ -3,10 +3,10 @@
     "name": "Unified Docs Switcher",
     "description": "Automatically redirect to preferred documentation version for many projects",
     "author": "Doug Harris",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icons": {
-        "48": "books.svg",
-        "96": "books.svg"
+        "48": "books48.png",
+        "128": "books.png"
     },
     "background": {
         "scripts": [

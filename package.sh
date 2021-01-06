@@ -43,12 +43,12 @@ mkdir -p firefox
 # Create zip file for Chrome
 zip -FS chrome/unified_doc_switcher.zip manifest.json \
     background.js \
-    books.svg \
     browser-polyfill.min.js \
     browser-polyfill.min.js.map \
     content-script.js \
     doc-switcher.css \
-    books.png
+    books.png \
+    books48.png
 
 
 # Add app id info for Firefox
@@ -57,11 +57,12 @@ gsed -i '/author/r add-on-id.txt' manifest.json
 # Create zip file for Firefox
 zip -FS firefox/unified_doc_switcher.zip manifest.json \
     background.js \
-    books.svg \
     browser-polyfill.min.js \
     browser-polyfill.min.js.map \
     content-script.js \
-    doc-switcher.css 
+    doc-switcher.css \
+    books.png \
+    books48.png
 
 # Undo manifest change
 git checkout manifest.json
