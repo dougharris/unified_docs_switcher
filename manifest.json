@@ -17,6 +17,7 @@
     "content_scripts": [
         {
             "matches": [
+                "https://docs.celeryproject.org/*",
                 "https://docs.djangoproject.com/*",
                 "https://www.postgresql.org/docs/*",
                 "https://docs.python.org/*"
@@ -29,6 +30,7 @@
         }
     ],
     "permissions": [
+        "https://docs.celeryproject.org/*",
         "https://docs.djangoproject.com/*",
         "https://www.postgresql.org/docs/*",
         "https://docs.python.org/*",

@@ -16,6 +16,12 @@ const docsData = {
         urls: "https://www.postgresql.org/docs/*",
         pattern: "www.postgresql.org/docs/(?<version>[0-9]+(\.[0-9]+)*|devel|current)/",
         versionSelector: '.mb-2 a[href*="DOCSTUB"], .alert-warning a[href*="DOCSTUB"]'
+    },
+    celery: {
+        version: "stable",
+        urls: "https://docs.celeryproject.org/*",
+        pattern: "docs.celeryproject.org/en/(?<version>stable|master|latest|v?[0-9](\.[0-9]+)*(-archived)?)/",
+        versionSelector: '.rst-other-versions dd a'
     }
 };
 
