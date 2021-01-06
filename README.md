@@ -23,6 +23,7 @@ This was inspired by [django docs version switcher](https://github.com/jmckib/dj
 
 This extension currently works for the following platforms' documentation:
 
+* Celery - https://docs.celeryproject.org/
 * Django - https://docs.djangoproject.com/
 * PostgreSQL - https://www.postgresql.org/docs
 * Python - https://docs.python.org/
@@ -37,7 +38,7 @@ Just browse. Whenever you explicitly change versions on one of the sites, your p
 
 The extension is available on:
 * Chrome Web Store - search for ["unified docs switcher"](https://chrome.google.com/webstore/search/unified%20docs%20switcher?hl=en)
-* Firefox Addons - search for ["unified docs switcher"](https://addons.mozilla.org/en-US/firefox/search/?platform=mac&q=unified%20docs%20switcher)
+* [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/unified-docs-switcher/)
 
 
 ## Bugs & Feature Requests
