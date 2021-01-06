@@ -84,10 +84,12 @@
                 messageHTML = "<p>You&rsquo;ve been redirected to the " +
                     "docs for <strong>" + version +
                     "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p>";
-                debugMsg(`going to display banner:\n${messageHTML}`);
+                let parsed = new DOMParser().parseFromString(messageHTML, 'text/html');
+                let messageP = parsed.querySelector('p');
+
                 messageDiv = document.createElement('div');
                 messageDiv.setAttribute('id', 'doc-switch-banner');
-                messageDiv.innerHTML = messageHTML;
+                messageDiv.appendChild(messageP);
                 messageDiv.addEventListener('click', () => { hideMsg(0); });
                 document.body.appendChild(messageDiv);
 
