@@ -85,14 +85,22 @@ let redirector = (function() {
         identifyPlatform(originUrl);
 
         // Determine if this page's version matches my preferred version
+        let thisVersion = match.groups.version;
+
         let myVersion = preferredVersions[platform];
         if (!myVersion) {
             debugMsg(`Couldn't find ${platform} version`);
-            setDefaultVersions();
+            if (platform in docsData) {
+                // New platform for this user? Set the default
+                setDefaultVersions();
+                myVersion = preferredVersions[platform];
+            } else {
+                // Some other reason not saved? Use the current page's version
+                myVersion = thisVersion;
+            }
         }
 
-        let thisVersion = match.groups.version;
-        debugMsg(`Matched ${platform} version ${match.groups.version} `);
+        debugMsg(`Matched ${platform} version ${thisVersion} `);
         if (thisVersion != myVersion) {
             redirectUrl = originUrl.replace(thisVersion, myVersion);
             debugMsg(`Redirecting to version ${myVersion} to ${redirectUrl}`);
