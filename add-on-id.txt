@@ -1,6 +1,6 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "unified_docs_switcher@dougharris.github.io",
-            "strict_min_version": "42.0"
+            "strict_min_version": "53.0"
         }
     },
