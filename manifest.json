@@ -34,7 +34,6 @@
         "https://docs.python.org/*",
         "webRequest",
         "webRequestBlocking",
-        "storage",
-        "activeTab"
+        "storage"
     ]
 }
