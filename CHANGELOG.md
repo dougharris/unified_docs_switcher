@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed issue #4 which choked for python version "3.10 (dev)"
+
 ## [1.0.2] - 2020-01-06
 
 ### Fixed

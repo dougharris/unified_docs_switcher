@@ -28,7 +28,7 @@
             element.addEventListener(event, function(e) {
                 let newVersion;
                 if (e.target.nodeName == 'SELECT') {
-                    newVersion = element.selectedOptions[0].innerText;
+                    newVersion = element.selectedOptions[0].value;
                 } else {
                     newVersion = element.innerText;
                 }

@@ -6,7 +6,7 @@ const docsData = {
         versionSelector: "ul#doc-versions a"
     },
     python: {
-        version: "3.9",
+        version: "3",
         urls: "https://docs.python.org/*",
         pattern: "docs.python.org/(?<version>[23][^/]*?)/",
         versionSelector: ".version_switcher_placeholder select"
