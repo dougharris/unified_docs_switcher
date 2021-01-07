@@ -28,7 +28,7 @@ This extension currently works for the following platforms' documentation:
 * PostgreSQL - https://www.postgresql.org/docs
 * Python - https://docs.python.org/
 
-Want a new one added? [Let me know](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=). See how Django handles this for text links or how Python handles this for a select list in the `docsData` array [in the code](https://github.com/dougharris/unified_docs_switcher/blob/main/background.js).
+Want a new one added? [Let me know](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=). See how Django handles this for text links or how Python handles this for a select list in the `docsData` array [in the code](https://github.com/dougharris/unified_docs_switcher/blob/main/background.js#L2-L13).
 
 ## Usage
 
@@ -37,7 +37,7 @@ Just browse. Whenever you explicitly change versions on one of the sites, your p
 ## Install
 
 The extension is available on:
-* Chrome Web Store - search for ["unified docs switcher"](https://chrome.google.com/webstore/search/unified%20docs%20switcher?hl=en)
+* [Chrome Web Store](https://chrome.google.com/webstore/detail/unified-docs-switcher/egmbedhkleiholijlmnlhgcflooajdnb/)
 * [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/unified-docs-switcher/)
 
 
