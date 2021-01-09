@@ -19,7 +19,7 @@ then
 fi
 
 # Remember to change storage back to sync
-grep -q 'storage = browser.storage.local' background.js
+grep -q 'storage = browser.storage.local' background.js popup/switcher-popup.js 
 if [[ $? -eq 0 ]]
 then
     echo "===> Change storage from local to sync before continuing."
@@ -41,28 +41,29 @@ mkdir -p chrome
 mkdir -p firefox
 
 # Create zip file for Chrome
-zip -FS chrome/unified_doc_switcher.zip manifest.json \
+zip -r -FS chrome/unified_doc_switcher.zip manifest.json \
     background.js \
     browser-polyfill.min.js \
     browser-polyfill.min.js.map \
     content-script.js \
     doc-switcher.css \
     books.png \
-    books48.png
-
+    books48.png \
+    popup
 
 # Add app id info for Firefox
 gsed -i '/author/r add-on-id.txt' manifest.json
 
 # Create zip file for Firefox
-zip -FS firefox/unified_doc_switcher.zip manifest.json \
+zip -r -FS firefox/unified_doc_switcher.zip manifest.json \
     background.js \
     browser-polyfill.min.js \
     browser-polyfill.min.js.map \
     content-script.js \
     doc-switcher.css \
     books.png \
-    books48.png
+    books48.png \
+    popup
 
 # Undo manifest change
 git checkout manifest.json

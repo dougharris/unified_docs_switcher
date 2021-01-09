@@ -32,7 +32,7 @@ let redirector = (function() {
 
     let debug = false;
     let debugMsg = function(msg) {
-        if (debug) { console.debug(msg); }
+        if (debug) { console.debug(`%c ${msg}`, 'font-size: 15px; color: #090;'); }
     };
 
     let platform = '';
@@ -120,9 +120,15 @@ let redirector = (function() {
     };
 
     let setNewVersion = function(platform, version) {
-        debugMsg(`Setting ${platform} to ${version}`);
-        preferredVersions[platform] = version;
-        storage.set({'preferredVersions': preferredVersions});
+        if (platform == 'all') {
+            debugMsg(`Setting all to default values`);
+            preferredVersions = {};
+            setDefaultVersions();
+        } else {
+            debugMsg(`Setting ${platform} to ${version}`);
+            preferredVersions[platform] = version;
+            storage.set({'preferredVersions': preferredVersions});
+        }
     };
 
     return {

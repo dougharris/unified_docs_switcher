@@ -27,3 +27,52 @@ div#doc-switch-banner > p {
 div#doc-switch-banner p strong {
   color: #00dd00 !important;
 }
+
+
+/** popup styles **/
+.doc-switcher-popup {
+    min-width: 175px;
+    background-color: black;
+    color: #00dd00;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.doc-switcher-popup h1 {
+    font-size: larger;
+    text-align: center;
+    border-bottom: 1px dashed #0d0;
+    padding-bottom: 5px;
+}
+
+.doc-switcher-popup p {
+    padding-left: 6px;
+}
+
+.doc-switcher-popup ul#version-text {
+    list-style: none;
+    padding-left: 10px;
+    line-height: 1.4em;
+    margin-top: 2px;
+}
+
+.doc-switcher-popup .left {
+    text-align: right;
+    padding-right: 4px;
+}
+
+.doc-switcher-popup tr.current {
+    font-style: bold;
+}
+
+.doc-switcher-popup .right {
+    font-family: monospace;
+}
+
+
+.doc-switcher-popup .reset-action {
+    text-align: center;
+    text-decoration: underline;
+    border-top: 1px dashed #0d0;
+    padding-top: 8px;
+    cursor: pointer;
+}
