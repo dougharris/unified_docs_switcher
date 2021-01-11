@@ -43,6 +43,8 @@ The extension is available on:
 
 ## Bugs & Feature Requests
 
+**Troubleshooting:** Pressing the extension's button on your browser's toolbar shows your current preferred versions for all sites. Clicking "Reset all to default versions" sets your preferred versions for all sites back to the default values.
+
 Add an [issue on the Github repo](https://github.com/dougharris/unified_docs_switcher/issues). 
 
 If you'd like to see a new documentation site handled by this extension, add a [new issue with the "new docs template" label](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=)
