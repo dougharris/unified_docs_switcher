@@ -22,7 +22,13 @@ const docsData = {
         urls: "https://docs.celeryproject.org/*",
         pattern: "docs.celeryproject.org/en/(?<version>stable|master|latest|v?[0-9](\.[0-9]+)*(-archived)?)/",
         versionSelector: '.rst-other-versions dd a'
-    }
+    },
+    wagtail: {
+        version: "stable",
+        urls: "https://docs.wagtail.org/*",
+        pattern: "docs.wagtail.org/en/(?<version>stable|master|latest|v?[0-9](\.[0-9]+)*(-archived)?)/",
+        versionSelector: '.rst-other-versions dd a'
+    },
 };
 
 let storage = browser.storage.sync;
