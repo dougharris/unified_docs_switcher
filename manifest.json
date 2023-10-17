@@ -3,7 +3,7 @@
     "name": "Unified Docs Switcher",
     "description": "Automatically redirect to preferred documentation version for many projects",
     "author": "Doug Harris",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icons": {
         "48": "books48.png",
         "128": "books.png"
@@ -22,11 +22,11 @@
     "content_scripts": [
         {
             "matches": [
-                "https://docs.wagtail.org/*",
-                "https://docs.celeryproject.org/*",
+                "https://docs.celeryq.dev/*",
                 "https://docs.djangoproject.com/*",
-                "https://www.postgresql.org/docs/*",
-                "https://docs.python.org/*"
+                "https://docs.python.org/*",
+                "https://docs.wagtail.org/*",
+                "https://www.postgresql.org/docs/*"
             ],
             "js": [
                 "browser-polyfill.min.js",
@@ -36,11 +36,11 @@
         }
     ],
     "permissions": [
-        "https://docs.wagtail.org/*",
-        "https://docs.celeryproject.org/*",
+        "https://docs.celeryq.dev/*",
         "https://docs.djangoproject.com/*",
-        "https://www.postgresql.org/docs/*",
         "https://docs.python.org/*",
+        "https://docs.wagtail.org/*",
+        "https://www.postgresql.org/docs/*",
         "webRequest",
         "webRequestBlocking",
         "storage"

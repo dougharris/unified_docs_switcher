@@ -19,8 +19,8 @@ const docsData = {
     },
     celery: {
         version: "stable",
-        urls: "https://docs.celeryproject.org/*",
-        pattern: "docs.celeryproject.org/en/(?<version>stable|master|latest|v?[0-9](\.[0-9]+)*(-archived)?)/",
+        urls: "https://docs.celeryq.dev/*",
+        pattern: "docs.celeryq.dev/en/(?<version>stable|master|latest|v?[0-9](\.[0-9]+)*(-archived)?)/",
         versionSelector: '.rst-other-versions dd a'
     },
     wagtail: {

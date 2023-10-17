@@ -23,10 +23,11 @@ This was inspired by [django docs version switcher](https://github.com/jmckib/dj
 
 This extension currently works for the following platforms' documentation:
 
-* Celery - https://docs.celeryproject.org/
+* Celery - https://docs.celeryq.dev/
 * Django - https://docs.djangoproject.com/
 * PostgreSQL - https://www.postgresql.org/docs
 * Python - https://docs.python.org/
+* Wagtail - https://docs.wagtail.org/
 
 Want a new one added? [Let me know](https://github.com/dougharris/unified_docs_switcher/issues/new?assignees=&labels=new+docs+platform&template=new-documentation-platform.md&title=). See how Django handles this for text links or how Python handles this for a select list in the `docsData` array [in the code](https://github.com/dougharris/unified_docs_switcher/blob/main/background.js#L2-L13).
 
