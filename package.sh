@@ -41,6 +41,7 @@ mkdir -p chrome
 mkdir -p firefox
 
 # Create zip file for Chrome
+echo "Packaging for chrome:"
 zip -r -FS chrome/unified_doc_switcher.zip manifest.json \
     background.js \
     browser-polyfill.min.js \
@@ -55,6 +56,7 @@ zip -r -FS chrome/unified_doc_switcher.zip manifest.json \
 gsed -i '/author/r add-on-id.txt' manifest.json
 
 # Create zip file for Firefox
+echo "Packaging for firefox:"
 zip -r -FS firefox/unified_doc_switcher.zip manifest.json \
     background.js \
     browser-polyfill.min.js \
