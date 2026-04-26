@@ -35,7 +35,9 @@ const docsData = {
         version: "stable",
         urls: "https://docs.celeryq.dev/*",
         pattern: "docs.celeryq.dev/en/(?<version>stable|master|latest|v?[0-9](?:\\.[0-9]+)*(?:-archived)?)/",
-        versionSelector: '.rst-other-versions dd a',
+        // RTD Addons flyout lives in a shadow DOM; selector is relative to its shadow root
+        versionSelector: 'dl.versions dd a',
+        shadowHost: 'readthedocs-flyout',
         ruleId: 4,
         // Capture group: 1=path-after-version
         regexFilter: "^https://docs\\.celeryq\\.dev/en/[^/]+(/.*)$",
@@ -45,7 +47,9 @@ const docsData = {
         version: "stable",
         urls: "https://docs.wagtail.org/*",
         pattern: "docs.wagtail.org/en/(?<version>stable|master|latest|v?[0-9](?:\\.[0-9]+)*(?:-archived)?)/",
-        versionSelector: '.rst-other-versions dd a',
+        // RTD Addons flyout lives in a shadow DOM; selector is relative to its shadow root
+        versionSelector: 'dl.versions dd a',
+        shadowHost: 'readthedocs-flyout',
         ruleId: 5,
         // Capture group: 1=path-after-version
         regexFilter: "^https://docs\\.wagtail\\.org/en/[^/]+(/.*)$",
@@ -141,6 +145,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse({ response: {
                     platform,
                     selector: docsData[platform].versionSelector,
+                    shadowHost: docsData[platform].shadowHost ?? null,
                     preferredVersion: preferredVersions[platform] ?? docsData[platform].version,
                 }});
             });

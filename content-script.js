@@ -7,20 +7,33 @@
     };
     let versionSelector = '';
     let versionPlatform;
+    let shadowHostSelector = null;
     let eventHandlerSet = false;
+
+    // Returns the shadow root for RTD-style platforms, or document for everything else.
+    let getQueryRoot = function() {
+        if (shadowHostSelector) {
+            const host = document.querySelector(shadowHostSelector);
+            return host && host.shadowRoot ? host.shadowRoot : null;
+        }
+        return document;
+    };
 
     let observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (!mutation.addedNodes || eventHandlerSet) return;
-            if (document.querySelectorAll(versionSelector).length > 0) {
-                setupEventHandler(versionSelector);
+            const root = getQueryRoot();
+            if (root && root.querySelectorAll(versionSelector).length > 0) {
+                setupEventHandler();
                 observer.disconnect();
             }
         });
     });
 
-    let setupEventHandler = function(selector) {
-        document.querySelectorAll(selector).forEach(function(element) {
+    let setupEventHandler = function() {
+        const root = getQueryRoot();
+        if (!root) return;
+        root.querySelectorAll(versionSelector).forEach(function(element) {
             let event;
             if (element.nodeName == 'SELECT') {
                 event = 'change';
@@ -80,6 +93,7 @@
 
         versionSelector = message.response.selector;
         versionPlatform = message.response.platform;
+        shadowHostSelector = message.response.shadowHost;
         let preferredVersion = message.response.preferredVersion;
 
         if (versionSelector.indexOf('DOCSTUB') > 0) {
@@ -90,12 +104,17 @@
 
         debugMsg(`Setting event handler for ${versionPlatform} on selector "${versionSelector}"`);
 
-        if (document.querySelectorAll(versionSelector).length > 0) {
+        const root = getQueryRoot();
+        if (root && root.querySelectorAll(versionSelector).length > 0) {
             debugMsg(`versionSwitcher found DOM element by selector, setting up handler.`);
-            setupEventHandler(versionSelector);
+            setupEventHandler();
         } else {
             debugMsg(`versionSwitcher didn't find DOM element by selector, setting up observer.`);
-            observer.observe(document.body, {
+            // For shadow DOM platforms, observe the shadow root if available; otherwise
+            // observe document.body and let the observer call getQueryRoot() once it appears.
+            const observeTarget = (shadowHostSelector &&
+                document.querySelector(shadowHostSelector)?.shadowRoot) || document.body;
+            observer.observe(observeTarget, {
                 childList: true,
                 subtree: true
             });
