@@ -1,4 +1,6 @@
 (function () {
+    const browser = globalThis.browser ?? globalThis.chrome;
+
     let debug = false;
     let debugMsg = function(msg) {
         if (debug) { console.debug(msg); }
@@ -46,9 +48,39 @@
         eventHandlerSet = true;
     };
 
+    let showRedirectBanner = function(version) {
+        console.log(`Unified Doc Switcher: Redirected to version ${version}`);
+        let messageHTML = "<p>You&rsquo;ve been redirected to the " +
+            "docs for <strong>" + version +
+            "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p>";
+        let parsed = new DOMParser().parseFromString(messageHTML, 'text/html');
+        let messageP = parsed.querySelector('p');
+
+        let messageDiv = document.createElement('div');
+        messageDiv.setAttribute('id', 'doc-switch-banner');
+        messageDiv.appendChild(messageP);
+        messageDiv.addEventListener('click', () => { hideMsg(0); });
+        document.body.appendChild(messageDiv);
+
+        let hideMsg = function(opacity) {
+            messageDiv.style.opacity = opacity;
+            opacity = opacity - 0.1;
+            if (opacity > 0) {
+                return window.setTimeout(hideMsg, 100, opacity);
+            } else {
+                document.body.removeChild(messageDiv);
+            }
+        };
+
+        window.setTimeout(hideMsg, 5000, 0.7);
+    };
+
     let versionSwitcherResponse = function(message) {
+        if (!message.response) return;
+
         versionSelector = message.response.selector;
         versionPlatform = message.response.platform;
+        let preferredVersion = message.response.preferredVersion;
 
         if (versionSelector.indexOf('DOCSTUB') > 0) {
             let path = window.location.pathname;
@@ -68,43 +100,14 @@
                 subtree: true
             });
         }
+
+        // Show banner if we were redirected to the preferred version
+        const navEntry = performance.getEntriesByType('navigation')[0];
+        if (navEntry && navEntry.redirectCount > 0 && preferredVersion) {
+            showRedirectBanner(preferredVersion);
+        }
     };
 
     const sending = browser.runtime.sendMessage({content: 'send-info'});
     sending.then(versionSwitcherResponse);
-
-    // If we were redirected, show a banner
-    browser.storage.local.get('redirectedVersion').then(
-        function(items) {
-            if ('redirectedVersion' in items) {
-                console.log(`Unified Doc Switcher: Redirected to ` +
-                            `version ${items.redirectedVersion}`);
-                let version = items.redirectedVersion;
-                browser.storage.local.remove('redirectedVersion');
-
-                messageHTML = "<p>You&rsquo;ve been redirected to the " +
-                    "docs for <strong>" + version +
-                    "</strong>.&nbsp;&nbsp;- Unified Docs Switcher</p>";
-                let parsed = new DOMParser().parseFromString(messageHTML, 'text/html');
-                let messageP = parsed.querySelector('p');
-
-                messageDiv = document.createElement('div');
-                messageDiv.setAttribute('id', 'doc-switch-banner');
-                messageDiv.appendChild(messageP);
-                messageDiv.addEventListener('click', () => { hideMsg(0); });
-                document.body.appendChild(messageDiv);
-
-                let hideMsg = function(opacity) {
-                    messageDiv.style.opacity = opacity;
-                    opacity = opacity - 0.1;
-                    if (opacity > 0) {
-                        return window.setTimeout(hideMsg, 100, opacity);
-                    } else {
-                        document.body.removeChild(messageDiv);
-                    }
-                };
-
-                window.setTimeout(hideMsg, 5000, 0.7);
-            }
-        });
 })();

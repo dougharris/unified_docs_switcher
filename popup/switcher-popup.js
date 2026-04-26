@@ -1,4 +1,5 @@
 (() => {
+    const browser = globalThis.browser ?? globalThis.chrome;
     let storage = browser.storage.sync;
 
     let init = () => {
