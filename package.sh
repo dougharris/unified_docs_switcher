@@ -10,16 +10,8 @@ then
     exit 1
 fi
 
-# Only package if manifest.json is clean
-git status manifest.json | grep -q manifest
-if [[ $? -eq 0 ]]
-then
-    echo "===> Commit changes to manifest.json before continuing."
-    exit
-fi
-
 # Remember to change storage back to sync
-grep -q 'storage = browser.storage.local' background.js popup/switcher-popup.js 
+grep -q 'storage = browser.storage.local' background.js popup/switcher-popup.js
 if [[ $? -eq 0 ]]
 then
     echo "===> Change storage from local to sync before continuing."
@@ -40,32 +32,20 @@ fi
 mkdir -p chrome
 mkdir -p firefox
 
+COMMON_FILES="background.js content-script.js doc-switcher.css books.png books48.png"
+
 # Create zip file for Chrome
 echo "Packaging for chrome:"
 zip -r -FS chrome/unified_doc_switcher.zip manifest.json \
-    background.js \
-    browser-polyfill.min.js \
-    browser-polyfill.min.js.map \
-    content-script.js \
-    doc-switcher.css \
-    books.png \
-    books48.png \
+    $COMMON_FILES \
     popup
 
-# Add app id info for Firefox
-gsed -i '/author/r add-on-id.txt' manifest.json
-
-# Create zip file for Firefox
+# Create zip file for Firefox using manifest-firefox.json as manifest.json
 echo "Packaging for firefox:"
-zip -r -FS firefox/unified_doc_switcher.zip manifest.json \
-    background.js \
-    browser-polyfill.min.js \
-    browser-polyfill.min.js.map \
-    content-script.js \
-    doc-switcher.css \
-    books.png \
-    books48.png \
-    popup
-
-# Undo manifest change
-git checkout manifest.json
+SRCDIR="$PWD"
+FFDIR=$(mktemp -d)
+trap "rm -rf $FFDIR" EXIT
+cp manifest-firefox.json "$FFDIR/manifest.json"
+cp $COMMON_FILES "$FFDIR/"
+cp -r popup "$FFDIR/"
+(cd "$FFDIR" && zip -r -FS "$SRCDIR/firefox/unified_doc_switcher.zip" .)

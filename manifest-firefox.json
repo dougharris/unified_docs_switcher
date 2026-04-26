@@ -1,0 +1,51 @@
+{
+    "manifest_version": 3,
+    "name": "Unified Docs Switcher",
+    "description": "Automatically redirect to preferred documentation version for many projects",
+    "author": "Doug Harris",
+    "version": "1.0.4",
+    "icons": {
+        "48": "books48.png",
+        "128": "books.png"
+    },
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "action": {
+        "default_icon": "books.png",
+        "default_title": "Doc Switcher",
+        "default_popup": "popup/switcher-popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://docs.celeryq.dev/*",
+                "https://docs.djangoproject.com/*",
+                "https://docs.python.org/*",
+                "https://docs.wagtail.org/*",
+                "https://www.postgresql.org/docs/*"
+            ],
+            "js": [
+                "content-script.js"
+            ],
+            "css": ["doc-switcher.css"]
+        }
+    ],
+    "host_permissions": [
+        "https://docs.celeryq.dev/*",
+        "https://docs.djangoproject.com/*",
+        "https://docs.python.org/*",
+        "https://docs.wagtail.org/*",
+        "https://www.postgresql.org/docs/*"
+    ],
+    "permissions": [
+        "declarativeNetRequest",
+        "storage"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "unified_docs_switcher@dougharris.github.io",
+            "strict_min_version": "113.0"
+        }
+    }
+}
